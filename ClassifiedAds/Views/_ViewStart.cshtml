@@ -1,0 +1,12 @@
+﻿@{
+    List<string> adminControllers = new List<string> { "Categories", "Lovs" };
+    var controllerName = ViewContext.RouteData.Values["controller"];
+    if (adminControllers.Contains(controllerName))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+}

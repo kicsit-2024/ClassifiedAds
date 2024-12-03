@@ -1,0 +1,15 @@
+Project Create
+Create a TestModel with Id, Name
+Scaffold Controller (context file name AppDbContext)
+	AppSettings.json add connnection string (update host/server)
+	Find out tables to be created in database (Called Models in MVC)
+	Determine 1:1, 1:m, m:m relations
+	AppDbContext remove TestModels, TestModelController, Views -> TestModel  Delete
+	For each model add DbSet<Model> in AppDbContext
+	If needed, override OnModelCreating in AppDbContext and handle cycles.
+
+	add-migration Mig_001, Mig_002
+	update-database -verbose
+	to Revert back migration use update-migration 20241128_Mig_002 (Find in Desginer Class)
+	remove one by one next migrations after + included 20241128_Mig_002
+	add new migration if needed and update database

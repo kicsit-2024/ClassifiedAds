@@ -1,0 +1,40 @@
+Relationships:
+one to many
+many to many
+one to one
+
+Parent: ABC
+Childs: 1abc, 2abc, 3abc
+
+Teacher: XYZ (PHY, CHE), PQR (BIO, Computer, Phy)
+Students: 1abc (PHY, CHEM, BIO)
+
+Teacher	Student
+XYZ		1abc
+XYZ		2abc
+XYZ		3abc
+PQR		1abc
+
+one to one:
+Person (Table) 5 fileds, id, name, cnic, address, gender
+100 moiz, 1234323324 islamabad, male
+
+Teacher: PersonId, Subjects, Exp etc.
+		100 
+
+Student: Id, Semester, FYP etc.
+1- 8th, Completed,
+
+One to many:
+Rule 1: Parent contains List<Child>
+and child contains Single Parent
+
+many to many:
+Rule 2: First Entity contians List<Second>
+Second Entity contains List<First>
+
+one to one:
+First Entity Contians Second Entity
+Second Entity Contains First Entity
+
+

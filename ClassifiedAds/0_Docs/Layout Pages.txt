@@ -1,0 +1,17 @@
+Layout Page: Master Page (Template), Shared with all pages
+Partial Page: Shared but not with all pages, some specific groups, 
+View Page: Normal Page
+
+Theme Integration:
+1. Copy index.html from admin template
+2. Paste index.html code into _AdminLayout in shared folder after creating View _AdminLayout
+3. Resolve any error related with Razor syntax (i.e remove @ or add 1 more @@ for text (not variables))
+4. Add @RenderBody() immediately in <body> tag
+5. Set Layout=_AdminLayout in any view page and access it in browser
+6. Create Themes folder under the wwwroot
+7. Copy theme assets (or any other folder) into Themes -> Admin/Client folder
+8. Replace assets path (.css, .js, img)
+9. Identify dynamic contents area (we found it in container-fluid->row->divs)
+10. Copy this area to index.cshtml (home)
+11. Place @RenderBody where you cut these contents
+12. Remove @RenderBody (Tempoarary Placed immedately insdie body)

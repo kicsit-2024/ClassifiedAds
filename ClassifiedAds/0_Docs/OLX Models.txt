@@ -1,0 +1,7 @@
+Category (Icon, Name)
+Ad: Price, PostedOn, Title, Category, List<images>
+advertisement group, nature (buy, rent, sale), duration type, description, map, 
+
+User: Id, Name, Photo, Login Id, Password, Joined on
+Reviews: Id, starts, text, commentedon,
+
