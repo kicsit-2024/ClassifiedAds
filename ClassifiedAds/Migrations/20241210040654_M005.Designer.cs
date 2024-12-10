@@ -4,6 +4,7 @@ using ClassifiedAds.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassifiedAds.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241210040654_M005")]
+    partial class M005
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,12 +58,10 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GoogleMap")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
@@ -69,18 +70,16 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,3)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RecordStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -90,10 +89,6 @@ namespace ClassifiedAds.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -115,12 +110,10 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
@@ -132,8 +125,7 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -141,10 +133,6 @@ namespace ClassifiedAds.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("AdsImages");
                 });
@@ -173,25 +161,19 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdId");
 
                     b.HasIndex("SpecId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("AdSpecValue");
                 });
@@ -208,8 +190,7 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Desription")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
@@ -218,21 +199,15 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("AdvertisementGroups");
                 });
@@ -249,35 +224,27 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RecordStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("ShortCode")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("Roles");
                 });
@@ -290,51 +257,37 @@ namespace ClassifiedAds.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(280)
-                        .HasColumnType("varchar");
-
                     b.Property<string>("CellNumber")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DbEntryTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePhoto")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RecordStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -351,15 +304,13 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LogoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -370,17 +321,12 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("Categories");
                 });
@@ -403,8 +349,7 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Rank")
                         .HasColumnType("int");
@@ -413,12 +358,10 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortCode")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -429,10 +372,6 @@ namespace ClassifiedAds.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("CategorySpec");
                 });
@@ -449,8 +388,7 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comments")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DbEntryTime")
                         .HasColumnType("datetime2");
@@ -465,8 +403,7 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -474,10 +411,6 @@ namespace ClassifiedAds.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -502,25 +435,19 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortCode")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("Lovs");
                 });
@@ -546,27 +473,20 @@ namespace ClassifiedAds.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LovId");
-
-                    b.HasIndex("Token")
-                        .IsUnique()
-                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("LovOptions");
                 });

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassifiedAds.Models
 {
@@ -14,6 +15,9 @@ namespace ClassifiedAds.Models
         
         [ScaffoldColumn(false)]
         public RecordStatus RecordStatus { get; set; }
+
+        public int? UserId { get; set; }
+        public string Token { get; set; }
 
         public virtual void MakeSafe(bool isUpdate = false)
         {

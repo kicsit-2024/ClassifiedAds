@@ -7,6 +7,7 @@ namespace ClassifiedAds.Models
     {
         [Required(ErrorMessage = "Category name is required")]
         [StringLength(50, MinimumLength =2, ErrorMessage = "2~50 valid length")]
+        [UnicodeDataType]
         public string Name { get; set; }
 
         [DataType(DataType.MultilineText)]

@@ -1,4 +1,6 @@
-﻿namespace ClassifiedAds.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ClassifiedAds.Models
 {
     public class AppUser:SharedModel
     {
@@ -11,5 +13,8 @@
         public List<Comment> Comments { get; set; }
         public List<Ad> Ads { get; set; }
         public List<AppRole> Roles { get; set; }
+
+        [StringLength(280)]
+        public string Address { get; set; }
     }
 }
