@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassifiedAds.Models
 {
@@ -16,13 +17,17 @@ namespace ClassifiedAds.Models
 
         public List<AdImage> Images { get; set; }
         public List<Comment> Comments { get; set; }
-        
-        public int UserId { get; set; }
+
+        //[Required]
+        public override int? UserId { get => base.UserId; set => base.UserId = value; }
         public AppUser User { get; set; }
 
         public int? GroupId { get; set; }
         public AdvertisementGroup Group { get; set; }
         public List<AdSpecValue> SpecsValues { get; set; }
+
+        [NotMapped]
+        public List<IFormFile> Uploads { get; set; }
     }
 
     public class AdSpecValue : SharedModel

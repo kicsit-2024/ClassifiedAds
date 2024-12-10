@@ -16,7 +16,7 @@ namespace ClassifiedAds.Models
         [ScaffoldColumn(false)]
         public RecordStatus RecordStatus { get; set; }
 
-        public int? UserId { get; set; }
+        public virtual int? UserId { get; set; }
         public string Token { get; set; }
 
         public virtual void MakeSafe(bool isUpdate = false)
