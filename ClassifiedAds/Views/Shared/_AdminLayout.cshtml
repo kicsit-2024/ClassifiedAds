@@ -69,6 +69,8 @@
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="/themes/admin/css/responsive.css">
     <link href="~/lib/ri-icons/remixicon.css" rel="stylesheet" />
+    <script src="~/lib/vue3/vue.global.prod.js"></script>
+    
     @RenderSection("css", false)
 </head>
 
@@ -1044,11 +1046,12 @@
     <script src="/themes/admin/js/customizer.js"></script>
 
     <!-- Ecommerce js-->
-    <script src="/themes/admin/js/ecommerce_dashboard.js"></script>
+    @* <script src="/themes/admin/js/ecommerce_dashboard.js"></script> *@
 
     <!-- prism js-->
     <script src="/themes/admin/vendor/prism/prism.min.js"></script>
 
+    <script src="~/js/site.js"></script>
     <!-- App js-->
     <script src="/themes/admin/js/script.js" asp-append-version="true"></script>
     @RenderSection("scripts", false)

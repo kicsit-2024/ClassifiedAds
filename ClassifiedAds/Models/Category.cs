@@ -6,7 +6,7 @@ namespace ClassifiedAds.Models
     public class Category : SharedModel
     {
         [Required(ErrorMessage = "Category name is required")]
-        [StringLength(50, MinimumLength =2, ErrorMessage = "2~50 valid length")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "2~50 valid length")]
         [UnicodeDataType]
         public string Name { get; set; }
 
@@ -37,6 +37,17 @@ namespace ClassifiedAds.Models
         public string ShortCode { get; set; }
         public CategorySpecValueType ValueType { get; set; }
         //public List<AdSpecValue> SpecsValues { get; set; }
+        public int? GroupId { get; set; }
+        public CategorySpecGroup Group { get; set; }
+
+        [NotMapped]
+        public string GroupName { get; set; }
+    }
+
+    public class CategorySpecGroup : SharedModel
+    {
+        public string Name { get; set; }
+        public List<CategorySpecGroup> Group { get; set; }
     }
 
     public enum CategorySpecValueType

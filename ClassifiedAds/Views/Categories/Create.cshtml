@@ -1,4 +1,4 @@
-﻿@model ClassifiedAds.Models.Category
+﻿@model ClassifiedAds.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,30 +9,76 @@
 
 <h4>Category</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div id="category-app">
+    {{3+5}}
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Logo" class="control-label"></label>
+                    <input asp-for="Logo" class="form-control" />
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="col-md-8">
+                <input type="text" v-model="groupInput" @@keypress.enter.prevent="addGroup" />
+                <input type="button" value="Add Group" @@click="addGroup" />
+
+                <table class="" style="width:100%; border:0">
+                    <template v-for="(g, gIndex) in groups">
+                        <tr>
+                            <td colspan="2" class="">
+                                <input v-model="g.name" :name="`Groups[${gIndex}].Name`" />
+                            </td>
+                            <td><span class="btn btn-info bg-info" @@click="addSpec(g)">+</span></td>
+                            <td><span class="btn bg-danger" @@click="removeGroup(g)">X</span></td>
+                        </tr>
+                        <tr>
+                            <td style="width:70px;">Rank</td>
+                            <td>Short Code</td>
+                            <td>Spec Name</td>
+                            <td>Data Type</td>
+                        </tr>
+                        <tr v-for="(spec, sIndex) in g.specs">
+                            <td style="width:70px;">
+                                <input :name="`Groups[${gIndex}].Specs[${sIndex}].Rank`" :id="`Groups_${gIndex}__Specs_${sIndex}__Rank`" v-model="spec.rank" placeholder="Rank" />
+                            </td>
+                            <td>
+                                <input :name="`Groups[${gIndex}].Specs[${sIndex}].ShortCode`" :id="`Groups_${gIndex}__Specs_${sIndex}__ShortCode`" v-model="spec.shortCode" placeholder="Short Code" />
+                            </td>
+                            <td>
+                                <input :name="`Groups[${gIndex}].Specs[${sIndex}].Name`" :id="`Groups_${gIndex}__Specs_${sIndex}__Name`" v-model="spec.name" placeholder="Name" />
+                            </td>
+                            <td>
+                                <select :name="`Groups[${gIndex}].Specs[${sIndex}].ValueType`" :id="`Groups_${gIndex}__Specs_${sIndex}__ValueType`" asp-items="@Html.GetEnumSelectList(typeof(CategorySpecValueType))"></select>
+                            </td>
+                            <td @@click="removeSpec(spec, g)">X</td>
+                        </tr>
+                    </template>
+
+                </table>
+                @* {{groups}} *@
             </div>
-            <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+     @*    <input asp-for="Groups[0].Name" />
+        <input asp-for="Groups[0].Specs[0].Name" />
+        <input asp-for="Groups[0].Specs[0].ValueType" />
+        <input asp-for="Groups[0].Specs[0].Rank" /> *@
+    </form>
 </div>
 
 <div>
@@ -40,5 +86,41 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var categoryApp = Vue.createApp({
+            data() {
+                return {
+                    groups: [],
+                    groupInput: ''
+                }
+            },
+            methods: {
+                addGroup() {
+                    if (this.groupInput) {
+                        var group = { id: +new Date(), name: this.groupInput, specs: [] };
+                        this.addSpec(group);
+                        this.groups.push(group);
+                    }
+
+                    this.groupInput = '';
+                },
+                addSpec(group) {
+                    group.specs.push({ id: +new Date(), name: '', rank: group.specs.length + 1, shortCode: '', valueType: 'Text' });
+                },
+                removeSpec(spec, group) {
+                    group.specs = group.specs.filter(m => m.id != spec.id);
+                    if (group.specs.length == 0) {
+                        this.removeGroup(group);
+                    }
+                },
+                removeGroup(group) {
+                    this.groups = this.groups.filter(m => m.id != group.id);
+                }
+            }
+        }).mount('#category-app');
+    </script>
 }

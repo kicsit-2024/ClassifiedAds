@@ -55,55 +55,75 @@ namespace ClassifiedAds.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,LogoUrl,Id,Logo")] Category model)
+        public async Task<IActionResult> Create(CategoryViewModel model)
         {
-            model.MakeSafe();
-
-            //if (model.Logo == null || model.Logo.Length == 0)
-            //{
-            //    ModelState.AddModelError("Logo", "Invalid file or file missing");
-            //}
-
-            //var ext = Path.GetExtension(model.Logo.FileName).ToLower().TrimStart('.');
-            //if (!Globals.SafeExtensionForUpload.Contains(ext))
-            //{
-            //    ModelState.AddModelError("Logo", $"{ext} extsion not allowed. Only {string.Join(", ", Globals.SafeExtensionForUpload)} extensions are allowed");
-            //    return View(model);
-            //}
-
-            //var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "categories");
-
-            //Directory.CreateDirectory(uploadsFolder);
-
-            //var fileName = Guid.NewGuid().ToString() + "." + ext;
-            //var filePath = Path.Combine(uploadsFolder, fileName);
-
-            //using (FileStream fs = new(filePath, FileMode.Create))
-            //{
-            //    model.Logo.CopyTo(fs);
-            //}
-
-            if (!FileUploadHelper.TryUpload(model.Logo, "categories", out string result))
-            {
-                ModelState.AddModelError("Logo", result);
-                return View(model);
-            }
-            else
-            {
-                model.LogoUrl = result;
-            }
-
             if (ModelState.IsValid)
             {
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                if (System.IO.File.Exists(model.LogoUrl))
+                var specGroups = model.Groups.Select(m => new CategorySpecGroup { Name = m.Name }).ToList();
+                var category = new Category
                 {
-                    System.IO.File.Delete(model.LogoUrl);
+                    Logo = model.Logo,
+                    Name = model.Name,
+                    Description = model.Description,
+                };
+
+                category.Specs = [];
+                foreach (var group in model.Groups)
+                {
+                    foreach (var spec in group.Specs)
+                    {
+                        var mainGroup = specGroups.Where(m => m.Name == group.Name).FirstOrDefault();
+                        CategorySpec categorySpec = new CategorySpec { Name = spec.Name, Group = mainGroup };
+                        category.Specs.Add(categorySpec);
+                    }
+                }
+
+                if (category.Logo == null || category.Logo.Length == 0)
+                {
+                    ModelState.AddModelError("Logo", "Invalid file or file missing");
+                }
+
+                var ext = Path.GetExtension(category.Logo.FileName).ToLower().TrimStart('.');
+                if (!Globals.SafeExtensionForUpload.Contains(ext))
+                {
+                    ModelState.AddModelError("Logo", $"{ext} extsion not allowed. Only {string.Join(", ", Globals.SafeExtensionForUpload)} extensions are allowed");
+                    return View(model);
+                }
+
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "categories");
+
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + "." + ext;
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (FileStream fs = new(filePath, FileMode.Create))
+                {
+                    model.Logo.CopyTo(fs);
+                }
+
+                if (!FileUploadHelper.TryUpload(category.Logo, "categories", out string result))
+                {
+                    ModelState.AddModelError("Logo", result);
+                    return View(model);
+                }
+                else
+                {
+                    model.LogoUrl = result;
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    if (System.IO.File.Exists(model.LogoUrl))
+                    {
+                        System.IO.File.Delete(model.LogoUrl);
+                    }
                 }
             }
             return View(model);

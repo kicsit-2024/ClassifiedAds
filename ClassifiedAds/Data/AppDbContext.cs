@@ -25,6 +25,7 @@ namespace ClassifiedAds.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Lov> Lovs { get; set; }
         public DbSet<LovOption> LovOptions { get; set; }
+        public DbSet<CategorySpecGroup> CategorySpecGroups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
