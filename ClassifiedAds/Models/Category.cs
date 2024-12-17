@@ -47,15 +47,15 @@ namespace ClassifiedAds.Models
     public class CategorySpecGroup : SharedModel
     {
         public string Name { get; set; }
-        public List<CategorySpecGroup> Group { get; set; }
+        public List<CategorySpec> Specs { get; set; }
     }
 
     public enum CategorySpecValueType
     {
-        Text,
-        Numeric,
-        DDList,
-        Boolean,
-        DateTime
+        Text = 0,
+        Numeric = 1,
+        DDList = 2,
+        Boolean = 3,
+        DateTime = 4
     }
 }

@@ -49,8 +49,15 @@ namespace ClassifiedAds.Controllers
         }
 
         // GET: Ads/Create
-        public IActionResult Create()
+        public IActionResult Create(int categoryId)
         {
+            
+            var category = _context.Categories.Where(m => m.Id == categoryId).Include(m => m.Specs).ThenInclude(m => m.Group).FirstOrDefault();
+            if (category == null)
+            {
+                return NotFound();
+            }
+            ViewBag.category = category;
             return View();
         }
 

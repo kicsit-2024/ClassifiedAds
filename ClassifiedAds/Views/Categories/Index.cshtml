@@ -39,8 +39,9 @@
 
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="ri-edit-line"></i></a>
-                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="ri-file-list-3-line"></i></a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="ri-file-list-3-line"></i></a>
                                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="ri-delete-bin-line"></i></a>
+                                    <a asp-action="Create" asp-controller="Ads" asp-route-categoryId="@item.Id"><i class="ri-add-fill"></i></a>
                                 </td>
                             </tr>
                         }
