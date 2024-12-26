@@ -1,0 +1,7 @@
+Downloading VS2022 for offline env
+VisualStudioSetup.exe --layout c:\Temp\VS2022 --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --lang en-US
+
+Download nuget.exe from nuget.org and run following commands
+
+nuget install Microsoft.EntityFrameworkCore -version 9.0.0
+nuget install Microsoft.EntityFrameworkCore.SqlServer -version 9.0.0

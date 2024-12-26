@@ -1,0 +1,113 @@
+
+
+public class AuthController(AppDbContext context, IConfiguration configuration) : Controller
+{
+    // GET
+    public async Task<IActionResult> Login(string returnUrl)
+    {
+        if (await context.AppUsers.AnyAsync()) return View();
+        AppUser superUser = new()
+        {
+            Name = "Abdul Majeed",
+            Password = "bls@10p@2024",
+            ActivatedTill = DateTime.UtcNow.AddYears(10),
+            EmailAddress = "evisionlearning@hotmail.com",
+            Roles = ["SuperUser", "SuperAdmin", "BLSUser"]
+        };
+        context.Add(superUser);
+        await context.SaveChangesAsync();
+        superUser.Password = AesEncryption.EncryptString(superUser.Id + superUser.Password);
+        await context.SaveChangesAsync();
+
+        AppUser superAdmin = new()
+        {
+            Name = "Abdul Majeed",
+            Password = "bls@10p@2024",
+            ActivatedTill = DateTime.UtcNow.AddYears(10),
+            EmailAddress = "raja-raheel@evisionsoft.com",
+            Roles = ["SuperAdmin", "BLSUser"]
+        };
+        context.Add(superUser);
+        await context.SaveChangesAsync();
+        superUser.Password = AesEncryption.EncryptString(superUser.Id + superUser.Password);
+        await context.SaveChangesAsync();
+
+        ViewBag.returnUrl = returnUrl;
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        var user = await context.AppUsers.FirstOrDefaultAsync(m => m.EmailAddress == model.LoginId);
+        if (user == null || AesEncryption.EncryptString(user.Id + model.Password) != user.Password)
+        {
+            ModelState.AddModelError("", "Login Id or Password invalid");
+            return View(model);
+        }
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.Name),
+            new(ClaimTypes.Email, model.LoginId),
+        };
+
+        if (!string.IsNullOrEmpty(user.MachineId))
+        {
+            claims.Add(new("MachineId", user.MachineId));
+        }
+
+        claims.Add(new("Id", user.Id.ToString()));
+
+        claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? "sdrhn237891lpbsiqpj43wghwfiuyghwefiu"));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: configuration["Jwt:Issuer"],
+            audience: configuration["Jwt:Audience"],
+            claims: claims,
+            expires: model.RememberMe ? DateTime.Now.AddYears(1) : DateTime.Now.AddDays(7),
+            signingCredentials: credentials);
+        var result = new JwtSecurityTokenHandler().WriteToken(token);
+        Response.Cookies.Append(Constants.CookieName, result, new CookieOptions()
+        {
+            Expires = DateTime.UtcNow.AddYears(10),
+            HttpOnly = true,
+            Secure = true
+        });
+
+        context.LoginHistories.Add(new AppUserLoginHistory()
+        {
+            UserId = user.Id,
+            JwtSignature = result.Split('.').Last(),
+            IsValid = true
+        });
+        await context.SaveChangesAsync();
+        if (model.ReturnUrl?.StartsWith($"/") == true)
+        {
+            return Redirect(model.ReturnUrl);
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        var cookie = Request.Cookies[Constants.CookieName] ?? "";
+        var signature = cookie.Split('.').Last();
+        var history = await context.LoginHistories.Where(m => m.JwtSignature == signature).FirstOrDefaultAsync();
+        if (history != null)
+        {
+            history.LogoutTime = DateTime.UtcNow;
+            await context.SaveChangesAsync();
+        }
+        Response.Cookies.Delete(Constants.CookieName);
+        return RedirectToAction("Login", "Auth");
+    }
+}

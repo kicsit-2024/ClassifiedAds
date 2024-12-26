@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassifiedAds.Controllers
 {
-    public class TestController : Controller
+    public class TestController(CategoriesHandler cHandler) : Controller
     {
         public IActionResult UniqueTokens()
         {
@@ -18,6 +18,18 @@ namespace ClassifiedAds.Controllers
 
 
             return Json(new { Total = tokens.Count, Unique = tokens.Distinct().Count(), Samples = tokens.Take(10), Time = (endTime - startTime).Milliseconds });
+        }
+
+        public IActionResult CNames()
+        {
+            return Json(cHandler.CategoriesNames());
+        }
+
+        public IActionResult TData()
+        {
+            TempData["my-data"] = "abc";
+            ViewBag.myData = "xyz";
+            return RedirectToAction("Index", "Home");
         }
     }
 }

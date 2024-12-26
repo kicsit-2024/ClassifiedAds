@@ -1,0 +1,65 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+namespace BLS_Solutions.Handlers;
+
+public abstract class JwtHandler
+{
+    private static Dictionary<string, string> GetClaims(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        if (handler.CanReadToken(token))
+        {
+            var jwtToken = handler.ReadJwtToken(token);
+            var claims = jwtToken.Claims;
+
+            // Convert claims to dictionary
+            var payload = new Dictionary<string, string>();
+
+            foreach (var claim in claims)
+            {
+                if (payload.ContainsKey(claim.Type))
+                {
+                    // If the key already exists, concatenate the new value
+                    payload[claim.Type] += $",{claim.Value}";
+                }
+                else
+                {
+                    // Add the claim to the dictionary
+                    payload[claim.Type] = claim.Value;
+                }
+            }
+
+            return payload;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private static string GetClaim(string token, string claimType)
+    {
+        var claims = GetClaims(token);
+        return claims.TryGetValue(claimType, out var value) ? value : null;
+    }
+
+    public static string GetMachineId(string token)
+    {
+        return GetClaim(token, "MachineId");
+    }
+    
+    public static int GetUserId(string token)
+    {
+        return Convert.ToInt16(GetClaim(token, "Id"));
+    }
+    
+    // New method to get user roles
+    public static List<string> GetUserRoles(string token)
+    {
+        var rolesClaim = GetClaim(token, ClaimTypes.Role);
+        return rolesClaim != null ?
+            // Assuming roles are stored as a comma-separated string
+            rolesClaim.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() : [];
+    }
+}

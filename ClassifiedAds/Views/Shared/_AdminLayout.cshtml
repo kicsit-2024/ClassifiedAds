@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    AuthCookieUser user = null;
+    var cookie = httpContextAccessor.HttpContext.Request.Cookies[Globals.AuthCookieName];
+    if (!string.IsNullOrEmpty(cookie))
+    {
+        user = JsonConvert.DeserializeObject<AuthCookieUser>(EncryptionHelper.DecryptString(cookie));
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 
 
@@ -85,6 +95,10 @@
             await Html.RenderPartialAsync("Partials/_Navbar");
         }
 
+        @if(user != null)
+        {
+            <h1>Welcome @user.UserName</h1>
+        }
         <div class="app-content">
             <div class="">
 

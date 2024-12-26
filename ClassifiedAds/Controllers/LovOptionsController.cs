@@ -7,17 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassifiedAds.Data;
 using ClassifiedAds.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClassifiedAds.Controllers
 {
-    public class LovOptionsController : Controller
+    [Authorize]
+    public class LovOptionsController(AppDbContext _context) : Controller
     {
-        private readonly AppDbContext _context;
+        //private readonly AppDbContext _context;
 
-        public LovOptionsController(AppDbContext context)
-        {
-            _context = context;
-        }
+        //public LovOptionsController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
 
         // GET: LovOptions
         public async Task<IActionResult> Index()

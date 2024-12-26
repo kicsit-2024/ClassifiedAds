@@ -23,7 +23,13 @@ namespace ClassifiedAds.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            var categoryTask = _context.Categories.ToListAsync();
+            // fetch from api
+            // calculate large data
+            var data = await categoryTask;
+            //var data = categoryTask.Result;
+
+            return View(data);
         }
 
         // GET: Categories/Details/5

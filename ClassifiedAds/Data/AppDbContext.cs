@@ -29,6 +29,8 @@ namespace ClassifiedAds.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Category>().HasData(new Category { Id = 1, Name = "Category" });
+
             // Fluent API
             //modelBuilder.Entity<CategorySpec>().HasOne(m => m.Category).WithMany(m => m.Specs).OnDelete(DeleteBehavior.Restrict);
             //modelBuilder.Entity<Comment>().HasOne(m => m.Ad).WithMany(m => m.Comments).OnDelete(DeleteBehavior.Restrict);
